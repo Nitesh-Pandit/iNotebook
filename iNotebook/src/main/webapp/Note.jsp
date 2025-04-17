@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-   
+    <%@ page import="java.sql.*" %>
+    <%@ page import="java.util.List" %>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -8,23 +9,19 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Notebook App</title>
-
-    
-    
     <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
-
     <link rel="stylesheet" href="css/Note.css" />
-   
+    <style>
+    .quill-disabled {
+    pointer-events: none;
+    opacity: 0.5;
+    </style>
 </head>
 
 <body>
-
-
-
-
     <div class="container">
         <aside class="sidebar">
             <div class="container">
@@ -32,29 +29,22 @@
                     <div class="avatar" id="profileDropdown" data-bs-toggle="dropdown" aria-expanded="false">
                         S
                     </div>
-                    <strong>sonikumar12345abc@gmail.com</strong><br />
+                    
                     <br />
                     <br />
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown">
                         <li class="dropdown-header">ACCOUNT</li>
                         <li class="px-3">
-                            <strong>sonikumar12345abc</strong><br />
-                            <small>sonikumar12345abc@gmail.com</small>
+                            
                         </li>
                         <hr />
-                        <li>
-                            <a class="dropdown-item" href="#"><i class="fas fa-user"></i> Account info...</a>
-                        </li>
-                        <li>
-                            <a class="dropdown-item" href="#"><i class="fas fa-cog"></i> Settings</a>
-                        </li>
+
+                        
                         <li>
                             <a class="dropdown-item" href="#"><i class="fas fa-bell"></i> Notifications</a>
                         </li>
                         <hr />
-                        <li>
-                            <a class="dropdown-item" href="#"><i class="fas fa-question-circle"></i> Need help?</a>
-                        </li>
+                       
                         <hr />
                         <li>
                             <a class="dropdown-item text-danger" href="#"><i class="fas fa-sign-out-alt"></i> Sign
@@ -139,7 +129,7 @@
                         <i class="fas fa-home"></i><a href="home.html" style="color: black; text-decoration: none">
                             Home</a>
                     </li>
-                    <li><i class="fas fa-calendar"></i> Calendar</li>
+                    
                     <li><i class="fas fa-sticky-note"></i> Notes</li>
                     <li><i class="fas fa-tasks"></i> Tasks</li>
                     <li><i class="fas fa-file"></i> Files</li>
@@ -163,43 +153,95 @@
         <main class="content">
             <div class="d-flex justify-content-between">
         <h3>Notes</h3>
-        <button type="button" class="btn btn-light btn-sm" style="width: 25%; color: blue" data-bs-toggle="modal" data-bs-target="#exampleModal">
-            Share
-        </button>
+       
     </div>
-    <p style="margin-right: 200px; font-weight: 600"> notes</p>
-            <div class="add-note">
-                <div class="slider1">
- 
- 				
- 
- 
-                    <div class="card my-3">
-                        <div class="card-header">
-                            <div style="display: flex; justify-content: space-between">
-                                <p style="margin-left: 90px; margin-top: 10px">
-                                  <b>Untittle</b>
-                                </p>
-                               
-                                <input type="hidden" name="note_id" value="All the notes appear here" />
-                                <button type="submit" class="btn btn-outline-danger" style="width: 75px; height: 40px">
-                                    Delete
-                                </button>
-                           
-                            </div>
-                        </div>
-                        <div class="card-body">
-                            <p class="card-text">
-                               All the card is created using css and html but some of there are not crated
-                            </p>
-                        </div>
-                        <div class="card-footer">
-                            <small class="text-body-secondary">7th march</small>
-                        </div>
-                    </div>
-                     
-                </div>
-            </div>
+  
+  
+ <!-- Always outside the loop -->
+<p style="margin-right: 200px; font-weight: 600">notes</p>
+<div class="add-note">
+    <div class="slider1">
+        <%-- LOOP STARTS HERE --%>
+        <%
+            Integer userId = (Integer) session.getAttribute("userId");
+            if (userId == null) {
+                response.sendRedirect("Signup.jsp");
+                return; 
+            }
+
+            String url = "jdbc:mysql://localhost:3306/notebook";
+            String dbUser = "root";
+            String dbPassword = "";
+
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection conn = DriverManager.getConnection(url, dbUser, dbPassword);
+            PreparedStatement pstmt = conn.prepareStatement(
+                "SELECT id, title, file_path, content, created_at FROM notes WHERE  user_id = ?"
+            );
+            pstmt.setInt(1, userId);
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                int noteId = rs.getInt("id");
+                String title = rs.getString("title");
+                String content = rs.getString("content");
+                Timestamp createdAt = rs.getTimestamp("created_at");
+        %>
+
+        <!-- ✅ Single Note Card -->
+       <!-- ✅ Single Note Card -->
+<div class="card my-3">
+    <div class="card-header">
+    
+        <div style="display: flex; justify-content: space-between">
+			       <button
+  type="button"
+  class="btn btn-light btn-sm"
+  style="color: blue; width:35%;"
+  data-bs-toggle="modal"
+  data-bs-target="#exampleModal"
+  data-note-id="<%= noteId %>"
+  data-title="<%= title %>"
+  data-content="<%= content %>"
+  data-created="<%= createdAt.toString() %>"
+>
+  Share
+</button>
+
+
+            <p style="margin-left: 10px; margin-top: 10px">
+                <b><%= title %></b>
+            </p>
+            
+        </div>
+    </div>
+   <div class="card-body">
+    <% if (rs.getBlob("file_path") != null) { %>
+        <img src="GetImage?id=<%= noteId %>" alt="Note Image" class="img-fluid mb-2" style="max-height: 200px; object-fit: cover;" />
+    <% } %>
+    <p class="card-text">
+        <%= content.length() > 200 ? content.substring(0, 200) + "..." : content %>
+    </p>
+</div>
+
+    <div class="card-footer">
+        <small class="text-body-secondary"><%= createdAt.toString() %></small>
+    </div>
+</div>
+
+
+        <% } %> <%-- END OF WHILE LOOP --%>
+        <%
+            rs.close();
+            pstmt.close();
+            conn.close();
+        %>
+    </div>
+</div>
+
+  
+  
+  
         </main>
         
 
@@ -230,6 +272,7 @@
                         <button class="ql-indent" value="-1"></button>
                         <button class="ql-indent" value="+1"></button>
                     </span>
+                    
                     <span class="ql-formats">
                         <select class="ql-align"></select>
                     </span>
@@ -256,12 +299,12 @@
                         </div>
                         <div class="modal-body">
                             <label for="exampleInputEmail1" class="form-label">Email address</label>
-                            <input type="text" class="form-control" id="Email Name" placeholder="Enter Email here!" />
+                           <input type="text" class="form-control" id="emailInput" placeholder="Enter Email here!" />
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-warning w-25">
-                                Send Invite
-                            </button>
+                            <button type="button" class="btn btn-warning w-25" onclick="sendNoteDetails()">
+							  Send
+							</button>
                         </div>
                     </div>
                 </div>
@@ -297,14 +340,72 @@
 
     <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
     <script>
-        var quill = new Quill("#editor", {
-            modules: {
-                toolbar: "#toolbar",
-            },
-            placeholder: "Start typing your notes...",
-            theme: "snow",
+    // Initialize Quill
+    var quill = new Quill("#editor", {
+      modules: {
+        toolbar: "#toolbar",
+      },
+      placeholder: "Start typing your notes...",
+      theme: "snow",
+    });
+
+    // Disable editor functionality
+    quill.enable(false);
+
+    // Add visual + interaction block
+    document.querySelector('.ql-container').classList.add('quill-disabled');
+    document.querySelector('#toolbar').classList.add('quill-disabled');
+    document.querySelector('.note-title').classList.add('quill-disabled');
+    document.querySelector('.rich-text-container').classList.add('quill-disabled');
+    
+        let selectedNote = {};
+
+        const exampleModal = document.getElementById('exampleModal');
+        exampleModal.addEventListener('show.bs.modal', function (event) {
+          const button = event.relatedTarget;
+
+          selectedNote = {
+            id: button.getAttribute('data-note-id'),
+            title: button.getAttribute('data-title'),
+            content: button.getAttribute('data-content'),
+            created: button.getAttribute('data-created'),
+          };
+
+          // Optionally clear email field
+          document.getElementById('emailInput').value = '';
         });
-       
+
+        // Handle Send button click
+        function sendNoteDetails() {
+          const email = document.getElementById('emailInput').value;
+
+          if (!email) {
+            alert('Please enter an email!');
+            return;
+          }
+
+          fetch('SendNoteEmailServlet', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              email: email,
+              note: selectedNote
+            })
+          })
+          
+          .then(res => res.text())
+          .then(response => {
+            alert(response);
+            const modal = bootstrap.Modal.getInstance(exampleModal);
+            modal.hide();
+          })
+          .catch(err => {
+            console.error('Error:', err);
+            alert('Failed to send email.');
+          });
+        }
 
     </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"

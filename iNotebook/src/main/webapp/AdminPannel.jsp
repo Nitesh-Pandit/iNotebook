@@ -1,14 +1,20 @@
+<%@ page import="java.util.*" %>
+<%@ page contentType="text/html; charset=UTF-8"%>
+<%@ page session="false" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
      <link rel="stylesheet" type="text/css" href="css/AdminPannelcss.css">
+         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-SgOJa3DmI69IUzQ2PVdRZhwQ+dy64/BUtbMJw1MZ8t5HZApcHrRKUc4W0kG879m7" crossorigin="anonymous">
+     
     <title>iNotebook Admin Panel</title>
    
 </head>
 <body>
-    <div class="container">
+    <div class="container" style="max-width: 1609px;">
+    
         <!-- Sidebar -->
         <nav class="sidebar">
             <h2>iNotebook Admin</h2>
@@ -17,8 +23,8 @@
                 <li><a href="#users">User Management</a></li>
                 <li><a href="#tasks">Task Management</a></li>
                 <li><a href="#notes">Notes Management</a></li>
-                <li><a href="#">Reports</a></li>
-                <li><a href="#">Logout</a></li>
+               
+                
             </ul>
         </nav>
         
@@ -26,255 +32,177 @@
         <div class="main-content">
             <header>
                 <h1>Admin Dashboard</h1>
-                <input type="text" placeholder="Search...">
-                <img src="admin-profile.jpg" alt="Admin">
+                
+                
             </header>
 
             <!-- Dashboard Overview -->
             <section id="dashboard" class="dashboard-cards">
-                <div class="card">Total Users: 150</div>
-                <div class="card">Total Notes: 300</div>
-                <div class="card">Total Tasks: 120</div>
+                <div class="card">Total Users: 1</div>
+                <div class="card">Total Notes: 3</div>
+                <div class="card">Total Tasks: 10</div>
+                <div class="card">Total Notebooks: 2</div>
             </section>
 
-            <!-- User Management -->
-            <section id="users">
-                <h2>User Management</h2>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>Email</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>John Doe</td>
-                            <td>john@example.com</td>
-                            <td>
-                                <button class="edit-btn">Edit</button>
-                                <button class="delete-btn">Delete</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Jane Smith</td>
-                            <td>jane@example.com</td>
-                            <td>
-                                <button class="edit-btn">Edit</button>
-                                <button class="delete-btn">Delete</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Mike Johnson</td>
-                            <td>mike@example.com</td>
-                            <td>
-                                <button class="edit-btn">Edit</button>
-                                <button class="delete-btn">Delete</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Emily Davis</td>
-                            <td>emily@example.com</td>
-                            <td>
-                                <button class="edit-btn">Edit</button>
-                                <button class="delete-btn">Delete</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Chris Brown</td>
-                            <td>chris@example.com</td>
-                            <td>
-                                <button class="edit-btn">Edit</button>
-                                <button class="delete-btn">Delete</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Chris Brown</td>
-                            <td>chris@example.com</td>
-                            <td>
-                                <button class="edit-btn">Edit</button>
-                                <button class="delete-btn">Delete</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Chris Brown</td>
-                            <td>chris@example.com</td>
-                            <td>
-                                <button class="edit-btn">Edit</button>
-                                <button class="delete-btn">Delete</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Chris Brown</td>
-                            <td>chris@example.com</td>
-                            <td>
-                                <button class="edit-btn">Edit</button>
-                                <button class="delete-btn">Delete</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Chris Brown</td>
-                            <td>chris@example.com</td>
-                            <td>
-                                <button class="edit-btn">Edit</button>
-                                <button class="delete-btn">Delete</button>
-                            </td>
-                        </tr>
-                             <tr>
-                            <td>Chris Brown</td>
-                            <td>chris@example.com</td>
-                            <td>
-                                <button class="edit-btn">Edit</button>
-                                <button class="delete-btn">Delete</button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </section>
+        <!-- User Management -->
+<section id="users">
+    <h2>User Management</h2>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <%
+                List<Map<String, String>> users = (List<Map<String, String>>) request.getAttribute("users");
+                if (users != null) {
+                    for (Map<String, String> user : users) {
+                        String name = user.get("name");
+                        String email = user.get("email");
+            %>
+            <tr>
+                <td><%= name %></td>
+                <td><%= email %></td>
+                <td>
+                    <form action="DeleteUserServlet" method="post" style="display:inline;">
+                        <input type="hidden" name="email" value="<%= email %>">
+                        <button class="btn btn-danger">Delete</button>
+                    </form>
+                </td>
+            </tr>
+            <%
+                    }
+                }
+            %>
+        </tbody>
+    </table>
+</section>
 
-         <!-- Task Management -->
+<!-- Task Management -->
 <section id="tasks">
     <h2>Task Management</h2>
-    <table>
+    <table border="1">
         <thead>
             <tr>
-                <th>Creation Time</th>
                 <th>Task Name</th>
-                <th>Timer</th>
-                <th>Status</th>
+                <th>Creation Time</th>
+                <th>Timer (Due Date)</th>
                 <th>Actions</th>
             </tr>
         </thead>
         <tbody>
+            <%
+                List<Map<String, String>> tasks = (List<Map<String, String>>) request.getAttribute("tasks");
+                if (tasks != null) {
+                    for (Map<String, String> task : tasks) {
+            %>
             <tr>
-                <td>2025-02-01 10:00 AM</td>
-                <td>Finish React Project</td>
-                <td>02:30:00</td>
-                <td><span class="status not-completed">Not Completed</span></td>
+                <td><%= task.get("task_name") %></td>
+                <td><%= task.get("created_at") %></td>
+                <td><%= task.get("due_date") %></td>
                 <td>
-                    <button class="edit-btn">Edit</button>
-                    <button class="delete-btn">Delete</button>
+                    <form action="DeleteTaskServlet" method="post" style="display:inline;">
+                        <input type="hidden" name="id" value="<%= task.get("id") %>">
+                        <button class="btn btn-danger">Delete</button>
+                    </form>
                 </td>
             </tr>
-            <tr>
-                <td>2025-02-02 11:00 AM</td>
-                <td>Meeting with Team</td>
-                <td>01:00:00</td>
-                <td><span class="status completed">Completed</span></td>
-                <td>
-                    <button class="edit-btn">Edit</button>
-                    <button class="delete-btn">Delete</button>
-                </td>
-            </tr>
-            <tr>
-                <td>2025-02-03 09:30 AM</td>
-                <td>Write Documentation</td>
-                <td>03:45:00</td>
-                <td><span class="status not-completed">Not Completed</span></td>
-                <td>
-                    <button class="edit-btn">Edit</button>
-                    <button class="delete-btn">Delete</button>
-                </td>
-            </tr>
-            <tr>
-                <td>2025-02-04 02:00 PM</td>
-                <td>Code Review</td>
-                <td>02:15:00</td>
-                <td><span class="status completed">Completed</span></td>
-                <td>
-                    <button class="edit-btn">Edit</button>
-                    <button class="delete-btn">Delete</button>
-                </td>
-            </tr>
-            <tr>
-                <td>2025-02-05 08:00 AM</td>
-                <td>Update Server</td>
-                <td>01:30:00</td>
-                <td><span class="status not-completed">Not Completed</span></td>
-                <td>
-                    <button class="edit-btn">Edit</button>
-                    <button class="delete-btn">Delete</button>
-                </td>
-            </tr>
+            <%
+                    }
+                }
+            %>
         </tbody>
     </table>
 </section>
 
-           <!-- Notes Management -->
+
+
+<!-- Notes Management -->
 <section id="notes">
     <h2>Notes Management</h2>
-    <table>
+    <table border="1">
         <thead>
             <tr>
-                <th>Note Name</th>
-                <th>Description</th>
-                <th>Files/Images</th>
+                <th>Title</th>
+                <th>Content</th>
+                <th>File Path</th>
+                <th>Created At</th>
                 <th>Actions</th>
             </tr>
         </thead>
         <tbody>
+            <%
+                List<Map<String, String>> notes = (List<Map<String, String>>) request.getAttribute("notes");
+                if (notes != null) {
+                    for (Map<String, String> note : notes) {
+            %>
             <tr>
-                <td>Project Ideas</td>
-                <td>List of project ideas for 2025.</td>
+                <td><%= note.get("title") %></td>
+                <td><%= note.get("content") %></td>
                 <td>
-                    <img src="image1.jpg" alt="Image 1" class="note-img">
-                    <a href="document1.pdf" class="note-file" download>document1.pdf</a>
+                    <% if (note.get("file_path") != null) { %>
+                        <a href="DownloadNoteFileServlet?noteId=<%= note.get("id") %>">Download</a>
+                    <% } else { %>
+                        N/A
+                    <% } %>
                 </td>
+                <td><%= note.get("created_at") %></td>
                 <td>
-                    <button class="edit-btn">Edit</button>
-                    <button class="delete-btn">Delete</button>
+                    <form action="DeleteNoteServlet" method="post" style="display:inline;">
+                        <input type="hidden" name="id" value="<%= note.get("id") %>">
+                       <button class="btn btn-danger">Delete</button>
+                    </form>
                 </td>
             </tr>
-            <tr>
-                <td>Meeting Notes</td>
-                <td>Notes from the team meeting.</td>
-                <td>
-                    <img src="image2.jpg" alt="Image 2" class="note-img">
-                    <a href="presentation.pptx" class="note-file" download>presentation.pptx</a>
-                </td>
-                <td>
-                    <button class="edit-btn">Edit</button>
-                    <button class="delete-btn">Delete</button>
-                </td>
-            </tr>
-            <tr>
-                <td>Learning Resources</td>
-                <td>Links and resources for React learning.</td>
-                <td>
-                    <img src="image3.jpg" alt="Image 3" class="note-img">
-                    <a href="ebook.pdf" class="note-file" download>ebook.pdf</a>
-                </td>
-                <td>
-                    <button class="edit-btn">Edit</button>
-                    <button class="delete-btn">Delete</button>
-                </td>
-            </tr>
-            <tr>
-                <td>Personal Notes</td>
-                <td>My personal thoughts and reflections.</td>
-                <td>
-                    <img src="image4.jpg" alt="Image 4" class="note-img">
-                </td>
-                <td>
-                    <button class="edit-btn">Edit</button>
-                    <button class="delete-btn">Delete</button>
-                </td>
-            </tr>
-            <tr>
-                <td>Weekly Tasks</td>
-                <td>Checklist for weekly tasks.</td>
-                <td>
-                    <a href="tasks.xlsx" class="note-file" download>tasks.xlsx</a>
-                </td>
-                <td>
-                    <button class="edit-btn">Edit</button>
-                    <button class="delete-btn">Delete</button>
-                </td>
-            </tr>
+            <%
+                    }
+                }
+            %>
         </tbody>
     </table>
 </section>
+
+
+<!-- Notebook Management -->
+<section id="notebooks">
+    <h2>Notebook Management</h2>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Created At</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <%
+                List<Map<String, String>> notebooks = (List<Map<String, String>>) request.getAttribute("notebooks");
+                if (notebooks != null) {
+                    for (Map<String, String> notebook : notebooks) {
+            %>
+            <tr>
+                <td><%= notebook.get("name") %></td>
+                <td><%= notebook.get("created_at") %></td>
+                <td>
+                    <form action="DeleteNotebookServlet" method="post" style="display:inline;">
+                        <input type="hidden" name="id" value="<%= notebook.get("id") %>">
+                       <button class="btn btn-danger">Delete</button>
+                    </form>
+                </td>
+            </tr>
+            <%
+                    }
+                }
+            %>
+        </tbody>
+    </table>
+</section>
+
+
+
 
         </div>
     </div>

@@ -125,13 +125,8 @@
         <div class="footer-column">
             <h2>iNotebook</h2>
             <p>ToDo website.</p>
-            <div class="social-icons">
-                <a href="#"><i class="fab fa-instagram"></i></a>
-                <a href="#"><i class="fab fa-facebook"></i></a>
-                <a href="#"><i class="fab fa-twitter"></i></a>
-                <a href="#"><i class="fab fa-linkedin"></i></a>
-            </div>
-            <button class="cta-button">Get for Free</button>
+            
+            
         </div>
 
         <!-- Company Links -->
@@ -158,7 +153,7 @@
     <div class="footer-bottom">
         <p>Need Help Customizing Your Site?</p>
         <p>Get personalized page adjustments from our expert team to make your site stand out.</p>
-        <button class="cta-button">Get in Touch</button>
+       
         <p>© All rights reserved. Flowfye.</p>
     </div>
 </footer>

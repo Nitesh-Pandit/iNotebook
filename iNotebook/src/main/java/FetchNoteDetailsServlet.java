@@ -28,7 +28,7 @@ public class FetchNoteDetailsServlet extends HttpServlet {
         String password = "";
 
         try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
+        	Class.forName("com.mysql.cj.jdbc.Driver");
 
             try (Connection conn = DriverManager.getConnection(url, user, password)) {
                 String sql = "SELECT title, content, created_at, file_path FROM notes WHERE id = ?";

@@ -1,24 +1,24 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
     <%@ page import="jakarta.servlet.http.HttpSession" %>
-
-
+<%@ page import="java.util.List" %>
+<%@ page import="java.util.ArrayList" %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-
  <link
       href="https://cdn.quilljs.com/1.3.6/quill.snow.css"
       rel="stylesheet"
     />
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
-      crossorigin="anonymous"
-    />
+   			<link
+		  href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+		  rel="stylesheet"
+		  integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+		  crossorigin="anonymous"
+		/>
+ 
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
@@ -30,7 +30,9 @@
     box-shadow: 5px 5px 20px rgba(0, 0, 0, 0.5);
     transform: scale(1.02);
 }
-
+.dropdown-menu {
+  z-index: 1050; /* Bootstrap default */
+}
 #notesContainer {
     max-height: 600px;  /* Adjust based on preference */
     overflow-y: auto;   /* Enables vertical scrolling */
@@ -126,124 +128,121 @@
             </div>
             <strong><%= userEmail %></strong><br /><br>
             <ul class="dropdown-menu dropdown-menu-end">
-                <li class="dropdown-header">ACCOUNT</li>
-                <li class="px-3">
-                    <strong><%= userName %></strong><br />
-                    <small><%= userEmail %></small>
-                </li>
-                <hr />
-                <li><a class="dropdown-item" href="#"><i class="fas fa-user"></i> Account info...</a></li>
-                <li><a class="dropdown-item" href="#"><i class="fas fa-cog"></i> Settings</a></li>
-                <li><a class="dropdown-item" href="#"><i class="fas fa-bell"></i> Notifications</a></li>
-                <hr />
-                <li><a class="dropdown-item" href="#"><i class="fas fa-question-circle"></i> Need help?</a></li>
-                <hr />
-                <li><a class="dropdown-item text-danger" href="LogoutServlet"><i class="fas fa-sign-out-alt"></i> Sign out</a></li>
-            </ul>
+			  <li class="dropdown-header">ACCOUNT</li>
+			  <li class="px-3">
+			    <strong><%= userName %></strong><br />
+			    <small><%= userEmail %></small>
+			  </li>
+			  <hr />
+			 
+			  <!-- Notifications section -->
+			  <li>
+			    <a class="dropdown-item" href="#">
+			      <i class="fas fa-bell"></i> Notifications
+			    </a>
+			    <ul id="notificationList" class="list-unstyled px-3">
+			      <!-- JS will append items here -->
+			    </ul>
+			  </li>
+			 
+			 
+			  <hr />
+			  <li><a class="dropdown-item text-danger" href="LogoutServlet"><i class="fas fa-sign-out-alt"></i> Sign out</a></li>
+			</ul>
+
         </div>
         
         </div>
-        <input type="text" class="search" placeholder="Search" />
+       <input type="text" id="searchInput" class="form-control" placeholder="Search notes or notebooks...">
+
+<!-- Message when no results are found -->
+<p id="noResults" style="display: none; color: red; text-align: center;">No matching results found.</p>
+
+
         <div class="d-flex justify-content-between">
           <button class="btn note"><a href="Note.jsp" style="color: black;text-decoration:none;">+ Note</a></button>
-          <div class="dropdown">
-            <button
-              class="btn btn-secondary"
-              type="button"
-              data-bs-toggle="dropdown"
-              style="margin: 10px"
-            >
-              ...
-            </button>
-            <ul class="dropdown-menu">
-              <li>
-                <a
-                  class="dropdown-item"
-                  href="#"
-                  data-bs-toggle="modal"
-                  data-bs-target="#exampleModal3"
-                >
-                  <i class="fas fa-book"></i> NoteBook
-                </a>
-               
-                
-              </li>
-              <hr />
-              <li>
-                <a class="dropdown-item" href="#" id="fileUploadBtn"
-                  ><i class="fas fa-file" ></i> File</a
-                >
-              </li>
-              <hr />
-              <li>
-                <a class="dropdown-item" href="#" id="imageUploadBtn"
-                  ><i class="fas fa-image" ></i> Image</a
-                >
-              </li>
-              <hr />
-              <li>
-                <a class="dropdown-item" href="#" id="sketchBtn"
-                  ><i class="fas fa-paint-brush" ></i> Sketch</a
-                >
-              </li>
-            </ul>
-          </div>
+         <div class="dropdown">
+  <button
+    class="btn btn-secondary dropdown-toggle"
+    type="button"
+    data-bs-toggle="dropdown"
+    aria-expanded="false"
+    style="margin: 10px"
+  >
+    ...
+  </button>
+  <ul class="dropdown-menu">
+    <li>
+      <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#exampleModal3">
+        <i class="fas fa-book"></i> NoteBook
+      </a>
+    </li>
+    <hr />
+    <li>
+      <a class="dropdown-item" href="#" id="fileUploadBtn">
+        <i class="fas fa-file"></i> File
+      </a>
+    </li>
+    <hr />
+    <li>
+      <a class="dropdown-item" href="#" id="imageUploadBtn">
+        <i class="fas fa-image"></i> Image
+      </a>
+    </li>
+  
+    
+  </ul>
+</div>
         </div>
+        <!--  -->
         
-        
-        
-                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#taskModal">+ Task</button>
 
+<!-- Task Button to Open Modal -->
+<button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#taskModal">+ Task</button>
 
-
-<!-- Modal -->
-    <div class="modal fade" id="taskModal" tabindex="-1" aria-labelledby="taskModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="taskModalLabel">Things to do</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form>
-                        <div class="mb-3">
-                            <label class="form-label">Task Name</label>
-                            <input type="text" class="form-control" placeholder="Enter task">
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Description</label>
-                            <textarea class="form-control" placeholder="What is this task about?"></textarea>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Due Date</label>
-                            <div class="d-flex">
-                                <button type="button" class="btn btn-outline-secondary">Today</button>
-                                <button type="button" class="btn btn-outline-secondary">Tomorrow</button>
-                                <button type="button" class="btn btn-outline-secondary">Custom</button>
-                                <button type="button" class="btn btn-outline-secondary">Repeat</button>
-                            </div>
-                        </div>
-                                               
-                       
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-primary">Create Task</button>
-                </div>
+<!-- Task Modal -->
+<div class="modal fade" id="taskModal" tabindex="-1" aria-labelledby="taskModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="taskModalLabel">Things to do</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
+            <div class="modal-body">
+                <!-- Task Form -->
+               <form id="taskForm">
+			  <div class="mb-3">
+			    <label class="form-label">Task Name</label>
+			    <input type="text" class="form-control" name="task_name" placeholder="Enter task">
+			  </div>
+			  <div class="mb-3">
+			    <label class="form-label">Description</label>
+			    <textarea class="form-control" name="description" placeholder="What is this task about?"></textarea>
+			  </div>
+			  <div class="mb-3">
+			    <label class="form-label">Due Date</label>
+			   <input type="date" class="form-control" name="due_date" required>
+
+
+			  </div>
+			</form>
+			
+			
+			<!-- Footer outside form -->
+			<div class="modal-footer">
+			  <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
+			  <button type="submit" class="btn btn-primary" form="taskForm">Create Task</button>
+			</div>
+			
+			  </div>
         </div>
     </div>
+</div>
+
 
         <div class="slider">
           <ul>
-            <li>
-              <i class="fas fa-home"></i
-              ><a href="Home.jsp" style="color: black; text-decoration: none">
-                Home</a
-              >
-            </li>
-           <ul class="list-unstyled">
+                       <ul class="list-unstyled">
 <li>
     <i class="fas fa-sticky-note"></i> Notes
     <!-- "+ New Note" button should be placed BEFORE the dynamic list -->
@@ -266,8 +265,27 @@
 </li>
 
 </ul>
-            <li><i class="fas fa-tasks"></i> Tasks</li>
-            <li><i class="fas fa-file"></i> Files</li>
+          <li>
+  <i class="fas fa-tasks"></i> Tasks
+  <ul id="tasksList" style="max-height: 300px; overflow-y: auto; border: 2px solid #ddd; border-radius: 8px; padding: 10px; background: #f9f9f9; color: green;font-weight:600;">
+    <!-- Tasks will be dynamically added here -->
+  </ul>
+</li>
+
+           <li>
+    <i class="fas fa-file"></i> Files
+    <ul id="filesList" style="max-height: 300px; overflow-y: auto; border: 2px solid #ddd; border-radius: 8px; padding: 10px; background: #f9f9f9; color: blue;">
+        <!-- Files will be dynamically added here -->
+        
+    
+    
+    
+    
+
+
+    </ul>
+</li>
+
            <div>
            
            </div>
@@ -279,7 +297,13 @@
          
              <b><ul id="notebookList3" style="color:green;"></ul></b>
             </li>
-            <li><i class="fas fa-share"></i> Shared with Me</li>
+           <li>
+				  <i class="fas fa-share"></i> Shared with Me
+				  <ul id="sharedWithMeList">
+				    <!-- Shared emails + time will be loaded here dynamically -->
+				  </ul>
+				</li>
+
             <li><i class="fas fa-trash"></i><a href="Trash.jsp" style="color: black; text-decoration: none">Trash</a></li>
           </ul>
         </div>
@@ -294,15 +318,7 @@
 <h3 id="NotebookTitle" data-id="null">Notebook</h3>
 
 
-          <button
-            type="button"
-            class="btn btn-light btn-sm"
-            style="width: 25%; color: blue"
-            data-bs-toggle="modal"
-            data-bs-target="#exampleModal"
-          >
-            Share
-          </button>
+         
         </div>
        <p id="noteCount">0 notes</p>
           <div id="notesContainer"></div>
@@ -364,7 +380,7 @@
         Update
     </button>
 
-    <div id="editor"></div>
+    <div id="editor"></div>	
 </div>
 
 
@@ -384,8 +400,7 @@
 
 </div>
 
-  </div>
-        </div>
+ 
 
         <!-- Modal for Share Btn   -->
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -469,16 +484,104 @@
       theme: "snow",
     
   });
-  
   quill.on("text-change", function () {
 	    document.getElementById("hiddenContent").value = quill.root.innerHTML;
 	});
   
   
   
+  //Inserting the Task in the database.
+document.getElementById('taskForm').addEventListener('submit', function (e) {
+    e.preventDefault();
+
+    const form = document.getElementById('taskForm');
+    const formData = new FormData(form);
+
+    // Get due date from form
+    const dueDateValue = formData.get("due_date");
+    const dueDate = new Date(dueDateValue + "T00:00:00"); // Treat as midnight of selected date
+
+    fetch('CreateTaskServlet', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.text())
+    .then(message => {
+        alert(message);
+        form.reset();
+
+        // Hide modal
+        const modalEl = document.getElementById('taskModal');
+        let modalInstance = bootstrap.Modal.getInstance(modalEl);
+        if (!modalInstance) {
+            modalInstance = new bootstrap.Modal(modalEl);
+        }
+        modalInstance.hide();
+
+        const backdrop = document.querySelector('.modal-backdrop');
+        if (backdrop) backdrop.remove();
+        document.body.classList.remove('modal-open');
+        document.body.style = '';
+
+        // ✅ Add to Notifications dropdown
+        const notificationList = document.getElementById('notificationList');
+        const li = document.createElement('li');
+        li.innerHTML = `
+            <span style="color:green;">✅</span>
+            <span style="color:red;">Your task is created. You have to complete your task by <strong>${dueDate.toDateString()}</strong>.</span>
+        `;
+        notificationList.appendChild(li);
+
+        // ⏳ Set a reminder timer for that date
+        const now = new Date();
+        const timeUntilDue = dueDate - now;
+
+        if (timeUntilDue > 0) {
+            setTimeout(() => {
+                alert("⏰ Reminder: Your task is due today!");
+            }, timeUntilDue);
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Something went wrong while saving the task.');
+    });
+});
+
+
+
+
+
   
-  
-  
+ //Showing the name of all Task in Task section.
+document.addEventListener("DOMContentLoaded", function () {
+    const tasksList = document.getElementById('tasksList');
+    if (!tasksList) {
+        console.error("❌ tasksList element not found");
+        return;
+    }
+
+    fetch('GetTasksServlet')
+      .then(response => response.json())
+      .then(data => {
+        console.log("✅ Tasks fetched:", data); // Log the data to console
+        tasksList.innerHTML = ''; // Clear any existing tasks
+        if (data.length === 0) {
+          tasksList.innerHTML = '<li>No tasks found</li>'; // Display a message if no tasks
+        } else { 
+          data.forEach(task => {
+            const li = document.createElement('li');
+            li.textContent = task.task_name;
+
+            tasksList.appendChild(li);
+          });
+        }
+      })
+      .catch(error => {
+        console.error('Error loading tasks:', error);
+      });
+});
+
   
   
   
@@ -556,18 +659,6 @@
 	    .catch(error => console.error("Error fetching notes:", error));
 
 	});
-
-  
-  
-  
-  
-  
-  
-  
-  
-  
-
-  
   
     
   
@@ -734,17 +825,11 @@
 
 	        // ✅ Use innerHTML carefully to preserve the content formatting
 	        newNoteCard.innerHTML = `
+	        	 <div class="note-card">
 	            <div class="card-body position-relative" style="cursor:pointer;" >
-	            <button
-	            type="button"
-	            class="btn btn-warning btn-sm top-0 end-0 m-2"
-	            style="width: 30%; color: blue; position:absolute; left:160px;"
-	            data-bs-toggle="modal"
-	            data-bs-target="#exampleModal"
-	            data-note-id="${noteId}"
-	        >
-	                    Share
-	                </button>
+	          
+
+
 	                <h5 class="card-title text-primary"></h5> 
 	                <div class="card-text" style="white-space: pre-wrap;"></div> 
 	                <p class="text-muted">
@@ -757,6 +842,7 @@
 	                    <input type="hidden" name="noteId" value="${noteId}">
 	                    <button type="submit" class="btn btn-danger btn-sm delete-note">🗑️ Move to Trash</button>
 	                </form>
+	            </div>
 	            </div>
 	        `;
 
@@ -807,65 +893,11 @@
   
   
   
-  //Query for Share notes throught email
-  document.addEventListener("DOMContentLoaded", function () {
-    document.querySelectorAll(".share-btn").forEach((btn) => {
-        btn.addEventListener("click", function () {
-            let noteId = this.getAttribute("data-note-id"); // Get note ID from button attribute
-            document.getElementById("shareNoteId").value = noteId; // Store in hidden input
-        });
-    });
-
-    document.getElementById("sendEmailBtn").addEventListener("click", function () {
-        let email = document.getElementById("emailInput").value.trim();
-        let noteId = document.getElementById("shareNoteId").value;
-
-        if (!email || !noteId) {
-            alert("Invalid input data");
-            return;
-        }
-
-        // Send data to the servlet
-        fetch("ShareNoteServlet", {
-            method: "POST",
-            headers: { "Content-Type": "application/x-www-form-urlencoded" },
-            body: "email=" + encodeURIComponent(email) + "&noteId=" + encodeURIComponent(noteId),
-
-        })
-            .then((response) => response.text())
-            .then((data) => {
-                if (data.includes("status=success")) {
-                    alert("Note shared successfully!");
-                } else {
-                    alert("Failed to share the note: " + data);
-                }
-            })
-            .catch((error) => alert("Error: " + error));
-    });
-});
 
 
-  
-  function shareNote(noteId) {
-	    let email = prompt("Enter recipient's email:");
-	    if (!email) {
-	        alert("Email is required!");
-	        return;
-	    }
 
-	    fetch("ShareNoteServlet", {
-	        method: "POST",
-	        headers: { "Content-Type": "application/x-www-form-urlencoded" },
-	        body: "email=" + encodeURIComponent(email) + "&noteId=" + encodeURIComponent(noteId),
-	    })
-	    .then((response) => response.text())
-	    .then((data) => {
-	        alert("Note shared successfully!");
-	    })
-	    .catch((error) => {
-	        alert("Error sharing note: " + error);
-	    });
-	}
+
+
 
   
   
@@ -1462,15 +1494,111 @@ if (noteCard) {
 
     	});
       
-    
+      
+      document.getElementById("searchInput").addEventListener("input", function () {
+    	    let searchQuery = this.value.toLowerCase().trim();
 
+    	    let notes = document.querySelectorAll(".note-card"); // Selecting all notes
+    	    let notebooks = document.querySelectorAll("#notebookList3 li"); // Selecting all notebooks
+
+    	    let hasMatch = false;
+
+    	    // Filter Notes (Cards)
+    	    notes.forEach((note) => {
+    	        let title = note.querySelector(".card-title").innerText.toLowerCase();
+    	        let content = note.querySelector(".card-text").innerText.toLowerCase();
+    	        
+    	        if (title.includes(searchQuery) || content.includes(searchQuery)) {
+    	            note.style.display = "block"; // Show matching notes
+    	            hasMatch = true;
+    	        } else {
+    	            note.style.display = "none"; // Hide non-matching notes
+    	        }
+    	    });
+
+    	    // Filter Notebooks (List Items)
+    	    notebooks.forEach((notebook) => {
+    	        let notebookName = notebook.innerText.toLowerCase().trim();
+
+    	        if (notebookName.includes(searchQuery)) {
+    	            notebook.style.display = "block"; // Show matching notebooks
+    	            hasMatch = true;
+    	        } else {
+    	            notebook.style.display = "none"; // Hide non-matching notebooks
+    	        }
+    	    });
+
+    	    // If no match, you can show a message (optional)
+    	    let noResults = document.getElementById("noResults");
+    	    if (hasMatch) {
+    	        noResults.style.display = "none";
+    	    } else {
+    	        noResults.style.display = "block"; // Show message if nothing matches
+    	    }
+    	});
+
+
+      fetch('/getSharedWithMe')
+      .then(response => response.text()) // Use .text() instead of .json() to inspect the raw response
+      .then(data => {
+        console.log('Raw response:', data); // Log the raw response to check its content
+        try {
+          const jsonData = JSON.parse(data);
+          console.log('Parsed data:', jsonData);
+          // Handle the response here...
+        } catch (error) {
+          console.error('Error parsing JSON:', error);
+        }
+      })
+      .catch(error => console.error('Error fetching shared notes:', error));
+
+      
+      
+      
+      //Showing the all the files in file section
+      async function fetchFiles() {
+    	    try {
+    	        let response = await fetch("http://localhost:8082/iNotebook/FetchFiles");
+    	        let files = await response.json();
+
+    	        let filesList = document.getElementById("filesList");
+    	        filesList.innerHTML = ""; // Clear previous list
+
+    	        if (files.length === 0) {
+    	            filesList.innerHTML = "<li>No files found</li>";
+    	            return;
+    	        }
+
+    	        files.forEach(file => {
+    	            let listItem = document.createElement("li");
+
+    	            let fileImage = document.createElement("img");
+    	            fileImage.src = "data:image/jpeg;base64," + file.file_path;
+    	            fileImage.style.width = "100px"; // Set image size
+    	            fileImage.style.height = "100px";
+    	            fileImage.style.cursor = "pointer";
+
+    	            // Open full image in a new tab on click
+    	            fileImage.onclick = function () {
+    	                window.open(fileImage.src, "_blank");
+    	            };
+
+    	            listItem.appendChild(fileImage);
+    	            filesList.appendChild(listItem);
+    	        });
+
+    	    } catch (error) {
+    	        console.error("Error fetching files:", error);
+    	    }
+    	}
+    	// Call fetchFiles when the page loads
+    	document.addEventListener("DOMContentLoaded", fetchFiles);
     </script>
- 
-    
-    <script
-      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-      integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
-      crossorigin="anonymous"
-    ></script>
+
+   <script
+  src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+  integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+  crossorigin="anonymous"
+></script>
 </body>
 </html>

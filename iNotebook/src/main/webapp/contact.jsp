@@ -34,27 +34,32 @@
     
     <div class="contact-container">
 <img src="images/image7.png" class="img-fluid" alt="...">
-        <div class="contact-card">
-            <div class="left-panel">
-                <h2>Write us</h2>
-                <label for="name">Name</label>
-                <input type="text" id="name" placeholder="AdMike" >
 
-                <label for="email">E-mail</label>
-                <input type="email" id="email" placeholder="admike@domain.com" >
-               
-                <div class="checkbox">
-                    <input type="checkbox" id="robot-check" style="width:30%; margin-top:16px;">
-                    <label for="robot-check" style="width:100%">I am not a robot</label>
-                </div>
-            </div>
-
-            <div class="right-panel">
-                <label for="message">Message</label>
-                <textarea id="message" placeholder="Write text here..."></textarea>
-                <button type="submit">SEND MESSAGE</button>
-            </div>
-        </div>
+		       <form action="ContactServlet" method="post">
+		  <div class="contact-card">
+		    <div class="left-panel">
+		      <h2>Write us</h2>
+		
+		      <label for="name">Name</label>
+		      <input type="text" id="name" name="name" placeholder="AdMike" required>
+		
+		      <label for="email">E-mail</label>
+		      <input type="email" id="email" name="email" placeholder="admike@domain.com" required>
+		
+		      <div class="checkbox">
+		        <input type="checkbox" id="robot-check" name="robot-check" required style="width:30%; margin-top:16px;">
+		        <label for="robot-check" style="width:100%">I am not a robot</label>
+		      </div>
+		    </div>
+		
+		    <div class="right-panel">
+		      <label for="message">Message</label>
+		      <textarea id="message" name="message" placeholder="Write text here..." required></textarea>
+		
+		      <button type="submit">SEND MESSAGE</button>
+		    </div>
+		  </div>
+		</form>
 
 
     </div>

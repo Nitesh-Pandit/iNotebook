@@ -13,15 +13,14 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 
-
-
 /**
  * Servlet implementation class RegisterServlet
  */
+
 @WebServlet("/RegisterServlet")
 public class RegisterServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
+	
     /**
      * @see HttpServlet#HttpServlet()
      */

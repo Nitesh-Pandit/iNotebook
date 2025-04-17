@@ -286,7 +286,7 @@
   
    <main class="content" style="max-width:100%">
             <p>Get Ready to takes notes</p>
-            <h3>Sonikumari345atebac's <p class="text-danger">Deleted notes</p></h3>
+            <h3> <p class="text-danger">Deleted notes</p></h3>
             <div class="add-note" style="margin-top:0px;">
                 <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSgy6cH4pk8uBtQ-_MBHx5MtDO8ms62KxR0UQ&s" alt="Note Icon">
               
@@ -366,33 +366,9 @@
         });
 
     </script>
-
-        
-     
-
-
-
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
   </body>
 </html>
-
-
-
-
 <%
     } catch (Exception e) {
         e.printStackTrace();	

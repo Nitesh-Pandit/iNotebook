@@ -68,14 +68,8 @@
     </div>
     <button type="submit" class="btn btn-warning w-100">Login Now</button>
 </form>
-
-            <div class="text-center mt-3">Or register with</div>
-            <div class="d-flex justify-content-between mt-3">
-                <button class="btn btn-light w-48"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQiufjMBMPwlCuWDLiEEd_e9Z6jHGRi8kP7oA&s" width="20" > Google</button>
-                <button class="btn btn-light w-48"><img src="https://upload.wikimedia.org/wikipedia/commons/0/05/Facebook_Logo_%282019%29.png" width="20" alt="Facebook"> Facebook</button>
-            </div>
-        </div>
     </div>
+    
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>

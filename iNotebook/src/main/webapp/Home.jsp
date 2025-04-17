@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+     <%@ page import="jakarta.servlet.http.HttpSession" %>
    
 <!DOCTYPE html>
 <html lang="en">
@@ -24,63 +25,60 @@
 <body>
 
 
+<% 
+    HttpSession sessionObj = request.getSession(false);
+    String message = (sessionObj != null) ? (String) sessionObj.getAttribute("message") : null;
+    String alertType = (sessionObj != null) ? (String) sessionObj.getAttribute("alertType") : null;
+    String userName = (sessionObj != null) ? (String) sessionObj.getAttribute("userName") : null;
+    String userEmail = (sessionObj != null) ? (String) sessionObj.getAttribute("userEmail") : null;
+
+    if (userName == null || userEmail == null) {
+        response.sendRedirect("Signup.jsp");
+        return;
+    }
+
+    if (message != null && alertType != null) { 
+%>
+    <!-- Bootstrap Alert -->
+    <div class="alert alert-<%= alertType %> alert-dismissible fade show text-center floating-alert" role="alert" style="position: fixed; top: 20px; width: 100%; z-index: 9999;">
+        <strong><%= alertType.equals("success") ? "Success" : "Error" %>:</strong> <%= message %>
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+
+<%
+    // Remove message after displaying to prevent duplicate alerts
+    sessionObj.removeAttribute("message");
+    sessionObj.removeAttribute("alertType");
+    }
+%>
+
 
 
 
     <div class="container">
         <aside class="sidebar">
             <div class="container">
-              <div class="profile-container dropdown" style="cursor: pointer;">
-                <div
-                  class="avatar"
-                  id="profileDropdown"
-                  data-bs-toggle="dropdown"
-                  aria-expanded="false"
-                >
-                  S
-                </div>
-                 <strong>sonikumar12345abc@gmail.com</strong><br />
-                 <br>
-                 <br>
-                <ul
-                  class="dropdown-menu dropdown-menu-end"
-                  aria-labelledby="profileDropdown"
-                >
-                  <li class="dropdown-header">ACCOUNT</li>
-                  <li class="px-3">
-                    <strong>sonikumar12345abc</strong><br />
-                    <small>sonikumar12345abc@gmail.com</small>
-                  </li>
-                  <hr />
-                  <li>
-                    <a class="dropdown-item" href="#" 
-                      ><i class="fas fa-user"></i> Account info...</a
-                    >
-                  </li>
-                  <li>
-                    <a class="dropdown-item" href="#"
-                      ><i class="fas fa-cog"></i> Settings</a
-                    >
-                  </li>
-                  <li>
-                    <a class="dropdown-item" href="#"
-                      ><i class="fas fa-bell"></i> Notifications</a
-                    >
-                  </li>
-                  <hr />
-                  <li>
-                    <a class="dropdown-item" href="#"
-                      ><i class="fas fa-question-circle"></i> Need help?</a
-                    >
-                  </li>
-                  <hr />
-                  <li>
-                    <a class="dropdown-item text-danger" href="#"
-                      ><i class="fas fa-sign-out-alt"></i> Sign out</a
-                    >
-                  </li>
-                </ul>
-              </div>
+              <div class="profile-container dropdown">
+            <div class="avatar" id="profileDropdown" data-bs-toggle="dropdown">
+                <%= userName.charAt(0) %> 
+            </div>
+            <strong><%= userEmail %></strong><br /><br>
+            <ul class="dropdown-menu dropdown-menu-end">
+                <li class="dropdown-header">ACCOUNT</li>
+                <li class="px-3">
+                    <strong><%= userName %></strong><br />
+                    <small><%= userEmail %></small>
+                </li>
+                <hr />
+                <li><a class="dropdown-item" href="#"><i class="fas fa-user"></i> Account info...</a></li>
+                <li><a class="dropdown-item" href="#"><i class="fas fa-cog"></i> Settings</a></li>
+                <li><a class="dropdown-item" href="#"><i class="fas fa-bell"></i> Notifications</a></li>
+                <hr />
+                <li><a class="dropdown-item" href="#"><i class="fas fa-question-circle"></i> Need help?</a></li>
+                <hr />
+                <li><a class="dropdown-item text-danger" href="LogoutServlet"><i class="fas fa-sign-out-alt"></i> Sign out</a></li>
+            </ul>
+        </div>
             </div>
             <input type="text" class="search" placeholder="Search" />
             <div class="d-flex justify-content-between">
@@ -137,7 +135,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form>
+                    <form  action="TaskServlet"  method="POST">
                         <div class="mb-3">
                             <label class="form-label">Task Name</label>
                             <input type="text" class="form-control" placeholder="Enter task">
@@ -146,16 +144,28 @@
                             <label class="form-label">Description</label>
                             <textarea class="form-control" placeholder="What is this task about?"></textarea>
                         </div>
-                        <div class="mb-3">
-                            <label class="form-label">Due Date</label>
-                            <div class="d-flex">
-                                <button type="button" class="btn btn-outline-secondary">Today</button>
-                                <button type="button" class="btn btn-outline-secondary">Tomorrow</button>
-                                <button type="button" class="btn btn-outline-secondary">Custom</button>
-                                <button type="button" class="btn btn-outline-secondary">Repeat</button>
-                            </div>
-                        </div>
-                      
+                       <div class="mb-3">
+						    <label class="form-label">Due Date</label>
+						    <div class="d-flex">
+						        <div class="form-check form-check-inline">
+						            <input class="form-check-input" type="radio" name="due_date_option" id="today" value="today">
+						            <label class="form-check-label" for="today">Today</label>
+						        </div>
+						        <div class="form-check form-check-inline">
+						            <input class="form-check-input" type="radio" name="due_date_option" id="tomorrow" value="tomorrow">
+						            <label class="form-check-label" for="tomorrow">Tomorrow</label>
+						        </div>
+						        <div class="form-check form-check-inline">
+						            <input class="form-check-input" type="radio" name="due_date_option" id="custom" value="custom">
+						            <label class="form-check-label" for="custom">Custom</label>
+						        </div>
+						        <div class="form-check form-check-inline">
+						            <input class="form-check-input" type="radio" name="due_date_option" id="repeat" value="repeat">
+						            <label class="form-check-label" for="repeat">Repeat</label>
+						        </div>
+						    </div>
+						</div>
+
                        
                        
                     </form>
@@ -204,7 +214,7 @@
 
         <main class="content">
             <p>Get Ready to takes notes</p>
-            <h3>Sonikumari345atebac's Home</h3>
+            <h3><%= userEmail %>  's Home</h3>
             <div class="add-note">
                 <img src="images/nonotes.png" alt="Note Icon">
                 <p><strong>No Any notes Found here!</strong></p>

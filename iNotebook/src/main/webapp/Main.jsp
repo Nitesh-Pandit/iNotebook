@@ -6,9 +6,10 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Signup Page</title>
+    <title>Home Page</title>
         <link rel="stylesheet" type="text/css" href="css/Main.css">
     <link
+    
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
       rel="stylesheet"
     />
@@ -21,7 +22,7 @@
   <body style="  margin-left: 5px;
     margin-right: 5px;">
     
-    <% 
+<% 
     String message = request.getParameter("message");
     String alertType = request.getParameter("alertType");
     if (message != null) { 
@@ -31,7 +32,6 @@
         <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
     </div>
 <% } %>
-
 
 
    <header>
@@ -200,13 +200,7 @@
         <div class="footer-column">
             <h2>iNotebook</h2>
             <p>An E-commerce website.</p>
-            <div class="social-icons">
-                <a href="#"><i class="fab fa-instagram"></i></a>
-                <a href="#"><i class="fab fa-facebook"></i></a>
-                <a href="#"><i class="fab fa-twitter"></i></a>
-                <a href="#"><i class="fab fa-linkedin"></i></a>
-            </div>
-        </div>
+                    </div>
 
         <!-- Company Links -->
         <div class="footer-column">
@@ -224,7 +218,6 @@
             <p><a href="#">Delete</a></p>
             <p><a href="#">Share</a></p>
         </div>
-
         <!-- Contact Info -->
         <div class="footer-column">
             <h3>Contact</h3>
@@ -238,7 +231,7 @@
     <div class="footer-bottom">
         <p>Need Help Customizing Your Site?</p>
         <p>Get personalized page adjustments from our expert team to make your site stand out.</p>
-        <button class="cta-button">Get in Touch</button>
+  
         <p>© All rights reserved. Flowfye.</p>
     </div>
 </footer>
