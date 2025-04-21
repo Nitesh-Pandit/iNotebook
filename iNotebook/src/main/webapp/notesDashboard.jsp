@@ -18,7 +18,6 @@
 		  integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
 		  crossorigin="anonymous"
 		/>
- 
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
@@ -297,12 +296,7 @@
          
              <b><ul id="notebookList3" style="color:green;"></ul></b>
             </li>
-           <li>
-				  <i class="fas fa-share"></i> Shared with Me
-				  <ul id="sharedWithMeList">
-				    <!-- Shared emails + time will be loaded here dynamically -->
-				  </ul>
-				</li>
+         
 
             <li><i class="fas fa-trash"></i><a href="Trash.jsp" style="color: black; text-decoration: none">Trash</a></li>
           </ul>
@@ -528,7 +522,7 @@ document.getElementById('taskForm').addEventListener('submit', function (e) {
         const li = document.createElement('li');
         li.innerHTML = `
             <span style="color:green;">✅</span>
-            <span style="color:red;">Your task is created. You have to complete your task by <strong>${dueDate.toDateString()}</strong>.</span>
+            <span style="color:red;">Your task is created. You have to complete your task by time<strong>${dueDate.toDateString()}</strong>.</span>
         `;
         notificationList.appendChild(li);
 

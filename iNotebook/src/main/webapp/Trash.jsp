@@ -138,11 +138,11 @@
                     <small><%= userEmail %></small>
                 </li>
                 <hr />
-                <li><a class="dropdown-item" href="#"><i class="fas fa-user"></i> Account info...</a></li>
-                <li><a class="dropdown-item" href="#"><i class="fas fa-cog"></i> Settings</a></li>
+
+                
                 <li><a class="dropdown-item" href="#"><i class="fas fa-bell"></i> Notifications</a></li>
                 <hr />
-                <li><a class="dropdown-item" href="#"><i class="fas fa-question-circle"></i> Need help?</a></li>
+               
                 <hr />
                 <li><a class="dropdown-item text-danger" href="LogoutServlet"><i class="fas fa-sign-out-alt"></i> Sign out</a></li>
             </ul>
@@ -243,12 +243,7 @@
 
         <div class="slider">
           <ul>
-            <li>
-              <i class="fas fa-home"></i
-              ><a href="Home.jsp" style="color: black; text-decoration: none">
-                Home</a
-              >
-            </li>
+          
            <ul class="list-unstyled">
 <li>
     <i class="fas fa-sticky-note"></i> 
@@ -270,7 +265,7 @@
          
              <b><ul id="notebookList3" style="color:green;"></ul></b>
             </li>
-            <li><i class="fas fa-share"></i> Shared with Me</li>
+            
             <li><i class="fas fa-trash"></i> Trash</li>
           </ul>
         </div>

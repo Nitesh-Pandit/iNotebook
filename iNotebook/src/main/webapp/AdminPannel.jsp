@@ -41,7 +41,7 @@
                 <div class="card">Total Users: 1</div>
                 <div class="card">Total Notes: 3</div>
                 <div class="card">Total Tasks: 10</div>
-                <div class="card">Total Notebooks: 2</div>
+                <div class="card">Total Notebooks: 5</div>
             </section>
 
         <!-- User Management -->
@@ -200,10 +200,6 @@
         </tbody>
     </table>
 </section>
-
-
-
-
         </div>
     </div>
 </body>

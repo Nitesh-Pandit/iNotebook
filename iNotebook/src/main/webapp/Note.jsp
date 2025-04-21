@@ -125,11 +125,8 @@
     </div>
             <div class="slider">
                 <ul>
-                    <li>
-                        <i class="fas fa-home"></i><a href="home.html" style="color: black; text-decoration: none">
-                            Home</a>
-                    </li>
                     
+           
                     <li><i class="fas fa-sticky-note"></i> Notes</li>
                     <li><i class="fas fa-tasks"></i> Tasks</li>
                     <li><i class="fas fa-file"></i> Files</li>
@@ -160,7 +157,7 @@
  <!-- Always outside the loop -->
 <p style="margin-right: 200px; font-weight: 600">notes</p>
 <div class="add-note">
-    <div class="slider1">
+    <div class="slider1" style="width:300px;">
         <%-- LOOP STARTS HERE --%>
         <%
             Integer userId = (Integer) session.getAttribute("userId");

@@ -45,20 +45,20 @@
         </button>
 
         <!-- Navbar Links -->
-        <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
-            <ul class="navbar-nav">
-                <li class="nav-item">
-                    <a class="nav-link active text-light" href="#home">Home</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-light
-                    " href="about.html">About</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-light" href="contact.html">Contact</a>
-                </li>
-            </ul>
-        </div>
+       <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
+    <ul class="navbar-nav">
+        <li class="nav-item">
+            <a class="nav-link text-light disabled" href="#" tabindex="-1" aria-disabled="true">Home</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-light disabled" href="#" tabindex="-1" aria-disabled="true">About</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-light disabled" href="#" tabindex="-1" aria-disabled="true">Contact</a>
+        </li>
+    </ul>
+</div>
+
 
         <!-- Buttons (Aligned to the Right) -->
         <div class="d-flex">
